@@ -2,283 +2,162 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TicTacToe
+namespace SyntaxDemo
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			var stillPlaying = true;
+    // Enum Example
+    public enum DayOfWeek
+    {
+        Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+    }
 
-			Console.ForegroundColor = ConsoleColor.DarkGreen;
-			Console.WriteLine("-----------------------");
-			Console.WriteLine("Welcome to Tic Tac Toe!");
-			Console.WriteLine("-----------------------\n");
-			Console.ResetColor();
+    // Interface Example
+    public interface IGreetable
+    {
+        void Greet(string name);
+    }
 
-			while (stillPlaying)
-			{
-				Console.WriteLine("What would you like to do:");
-				Console.WriteLine("1. Start a new game");
-				Console.WriteLine("2. Quit\n");
+    // Class Example
+    public class Greeter : IGreetable
+    {
+        public void Greet(string name)
+        {
+            Console.WriteLine($"Hello, {name}! Welcome to the C# demo.");
+        }
+    }
 
-				Console.Write("Type a number and hit <enter>: ");
+    // Record Example
+    public record User(string Name, int Age);
 
-				var choice = GetUserInput("[12]");
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("C# Syntax Demo\n");
 
-				switch(choice)
-				{
-					case "1":
-						PlayGame();
-						Console.Clear();
-						break;
-					case "2":
-						stillPlaying = false;
-						break;
-				}
-			}
-		}
+            // Variables and Data Types
+            int number = 42;
+            string text = "Hello, World!";
+            bool isTrue = true;
+            double pi = 3.14159;
 
-		private static string GetUserInput(string validPattern = null)
-		{
-			var input = Console.ReadLine();
-			input = input.Trim();
+            Console.WriteLine($"Variables: {number}, {text}, {isTrue}, {pi}");
 
-			if (validPattern != null && !System.Text.RegularExpressions.Regex.IsMatch(input, validPattern))
-			{
-				Console.ForegroundColor = ConsoleColor.DarkRed;
-				Console.WriteLine("\"" + input + "\" is not valid.\n");
-				Console.ResetColor();
-				return null;
-			}
+            // Decision Making
+            int age = 20;
+            if (age < 18)
+            {
+                Console.WriteLine("You are a minor.");
+            }
+            else if (age >= 18 && age < 65)
+            {
+                Console.WriteLine("You are an adult.");
+            }
+            else
+            {
+                Console.WriteLine("You are a senior.");
+            }
 
-			return input;
-		}
+            // Ternary Operator
+            string eligibility = age >= 18 ? "Eligible to vote" : "Not eligible to vote";
+            Console.WriteLine(eligibility);
 
-		private static void PlayGame()
-		{
-			string numRowsChoice = null;
-			while (numRowsChoice == null)
-			{
-				Console.Write("How many rows do you want to have? (3, 4, or 5) ");
-				numRowsChoice = GetUserInput("[345]");
-			}
-			var boardSize = (int)Math.Pow(int.Parse(numRowsChoice), 2);
-			var board = new string[boardSize];
+            // Switch Case
+            DayOfWeek today = DayOfWeek.Friday;
+            switch (today)
+            {
+                case DayOfWeek.Monday:
+                    Console.WriteLine("Start of the work week.");
+                    break;
+                case DayOfWeek.Friday:
+                    Console.WriteLine("It's Friday! Weekend is near.");
+                    break;
+                default:
+                    Console.WriteLine("It's a regular day.");
+                    break;
+            }
 
-			var turn = "X";
-			while (true)
-			{
-				Console.Clear();
+            // Loops
+            Console.WriteLine("\nNumbers from 1 to 5:");
+            for (int i = 1; i <= 5; i++)
+            {
+                Console.Write($"{i} ");
+            }
+            Console.WriteLine();
 
-				var winner = WhoWins(board);
-				if (winner != null)
-				{
-					AnnounceResult(winner[0] + " WINS!!!", board);
-					break;
-				}
-				if (IsBoardFull(board))
-				{
-					AnnounceResult("It's a tie!!!", board);
-					break;
-				}
+            int counter = 0;
+            while (counter < 3)
+            {
+                Console.WriteLine($"Counter is {counter}");
+                counter++;
+            }
 
-				Console.WriteLine("Place your " + turn + ":");
+            // LINQ Example
+            List<int> numbers = new List<int> { 1, 2, 3, 4, 5 };
+            var evenNumbers = numbers.Where(n => n % 2 == 0);
+            Console.WriteLine("\nEven Numbers:");
+            foreach (var num in evenNumbers)
+            {
+                Console.Write($"{num} ");
+            }
+            Console.WriteLine();
 
-				DrawBoard(board);
+            // Method Call
+            Console.WriteLine("\nFactorial of 5 is " + CalculateFactorial(5));
 
-				Console.WriteLine("\nUse the arrow keys and press <enter>");
+            // Classes and Objects
+            IGreetable greeter = new Greeter();
+            greeter.Greet("User");
 
-				var xoLoc = GetXOLocation(board);
-				board[xoLoc] = turn;
+            // Records
+            User user = new User("Alice", 25);
+            Console.WriteLine($"\nUser Record: {user}");
 
-				turn = turn == "X" ? "O" : "X";
-			}
-		}
+            // Nullable Types
+            int? nullableInt = null;
+            Console.WriteLine($"Nullable Int: {nullableInt ?? 0}");
 
-		private static void AnnounceResult(string message, string[] board)
-		{
-			Console.WriteLine();
-			DrawBoard(board);
+            // Exception Handling
+            try
+            {
+                Console.WriteLine("\nAttempting risky operation...");
+                int result = number / 0; // This will throw an exception
+            }
+            catch (DivideByZeroException ex)
+            {
+                Console.WriteLine($"Caught an exception: {ex.Message}");
+            }
+            finally
+            {
+                Console.WriteLine("Cleaning up...");
+            }
 
-			Console.ForegroundColor = ConsoleColor.DarkGreen;
-			Console.WriteLine(message);
-			Console.ResetColor();
+            // Async/Await
+            Console.WriteLine("\nStarting async task...");
+            var task = PerformAsyncOperation();
+            task.Wait(); // Blocking here for simplicity
 
-			Console.Write("\nPress any key to continue...");
-			Console.CursorVisible = false;
-			Console.ReadKey();
-			Console.CursorVisible = true;
-		}
+            // Pattern Matching
+            object obj = "Pattern Matching in C#";
+            if (obj is string str)
+            {
+                Console.WriteLine($"\nPattern matched: {str}");
+            }
 
-		private static int GetXOLocation(string[] board)
-		{
-			int numRows = (int)Math.Sqrt(board.Length);
+            Console.WriteLine("\nProgram completed!");
+        }
 
-			int curRow = 0, curCol = 0;
-			
-			for (int i = 0; i < board.Length; i++)
-			{
-				if (board[i] == null)
-				{
-					curRow = i / numRows;
-					curCol = i % numRows;
-					break;
-				}
-			}
+        // Method Example
+        static int CalculateFactorial(int n)
+        {
+            if (n <= 1) return 1;
+            return n * CalculateFactorial(n - 1);
+        }
 
-			while (true)
-			{
-				Console.SetCursorPosition(curCol * 4 + 2, curRow * 4 + 3);
-				var keyInfo = Console.ReadKey();
-				Console.SetCursorPosition(curCol * 4 + 2, curRow * 4 + 3);
-				Console.Write(board[curRow * numRows + curCol] ?? " ");
-
-				switch (keyInfo.Key)
-				{
-					case ConsoleKey.LeftArrow:
-						if (curCol > 0)
-							curCol--;
-						break;
-					case ConsoleKey.RightArrow:
-						if (curCol + 1 < numRows)
-							curCol++;
-						break;
-					case ConsoleKey.UpArrow:
-						if (curRow > 0)
-							curRow--;
-						break;
-					case ConsoleKey.DownArrow:
-						if (curRow + 1 < numRows)
-							curRow++;
-						break;
-					case ConsoleKey.Spacebar:
-					case ConsoleKey.Enter:
-						if (board[curRow * numRows + curCol] == null)
-							return curRow * numRows + curCol;
-						break;
-				}
-			}
-		}
-
-		private static void DrawBoard(string[] board)
-		{
-			var numRows = (int)Math.Sqrt(board.Length);
-
-			Console.WriteLine();
-
-			for (int row = 0; row < numRows; row++)
-			{
-				if (row != 0)
-					Console.WriteLine(" " + string.Join("|", Enumerable.Repeat("---", numRows)));
-
-				Console.Write(" " + string.Join("|", Enumerable.Repeat("   ", numRows)) + "\n ");
-
-				for (int col = 0; col < numRows; col++)
-				{
-					if (col != 0)
-						Console.Write("|");
-					var space = board[row * numRows + col] ?? " ";
-					if (space.Length > 1)
-						Console.ForegroundColor = ConsoleColor.DarkGreen;
-					Console.Write(" " + space[0] + " ");
-					Console.ResetColor();
-				}
-
-				Console.WriteLine("\n " + string.Join("|", Enumerable.Repeat("   ", numRows)));
-			}
-
-			Console.WriteLine();
-		}
-
-		private static bool IsBoardFull(IEnumerable<string> board)
-		{
-			return board.All(space => space != null);
-		}
-
-		private static string WhoWins(string[] board)
-		{
-			var numRows = (int)Math.Sqrt(board.Length);
-			
-			// Check rows
-			for (int row = 0; row < numRows; row++)
-			{
-				if (board[row * numRows] != null)
-				{
-					bool hasTicTacToe = true;
-					for (int col = 1; col < numRows && hasTicTacToe; col++)
-					{
-						if (board[row * numRows + col] != board[row * numRows])
-							hasTicTacToe = false;
-					}
-					if (hasTicTacToe)
-					{
-						// Put an indicator in the board to know which ones are part of the tic tac toe
-						for (int col = 0; col < numRows; col++)
-							board[row * numRows + col] += "!";
-						return board[row * numRows];
-					}
-				}
-			}
-
-			// Check columns
-			for (int col = 0; col < numRows; col++)
-			{
-				if (board[col] != null)
-				{
-					bool hasTicTacToe = true;
-					for (int row = 1; row < numRows && hasTicTacToe; row++)
-					{
-						if (board[row * numRows + col] != board[col])
-							hasTicTacToe = false;
-					}
-					if (hasTicTacToe)
-					{
-						// Put an indicator in the board to know which ones are part of the tic tac toe
-						for (int row = 0; row < numRows; row++)
-							board[row * numRows + col] += "!";
-						return board[col];
-					}
-				}
-			}
-
-			// Check top left -> bottom right diagonal
-			if (board[0] != null)
-			{
-				bool hasTicTacToe = true;
-				for (int row = 1; row < numRows && hasTicTacToe; row++)
-				{
-					if (board[row * numRows + row] != board[0])
-						hasTicTacToe = false;
-				}
-				if (hasTicTacToe)
-				{
-					// Put an indicator in the board to know which ones are part of the tic tac toe
-					for (int row = 0; row < numRows; row++)
-						board[row * numRows + row] += "!";
-					return board[0];
-				}
-			}
-
-			// Check top right -> bottom left diagonal
-			if (board[numRows - 1] != null)
-			{
-				bool hasTicTacToe = true;
-				for (int row = 1; row < numRows && hasTicTacToe; row++)
-				{
-					if (board[row * numRows + (numRows - 1 - row)] != board[numRows - 1])
-						hasTicTacToe = false;
-				}
-				if (hasTicTacToe)
-				{
-					// Put an indicator in the board to know which ones are part of the tic tac toe
-					for (int row = 0; row < numRows; row++)
-						board[row * numRows + (numRows - 1 - row)] += "!";
-					return board[numRows - 1];
-				}
-			}
-
-			return null;
-		}
-	}
+        // Async Method Example
+        static async System.Threading.Tasks.Task PerformAsyncOperation()
+        {
+            await System.Threading.Tasks.Task.Delay(1000);
+            Console.WriteLine("Async operation completed.");
+        }
+    }
 }
