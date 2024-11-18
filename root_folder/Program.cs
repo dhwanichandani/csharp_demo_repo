@@ -10,20 +10,6 @@ namespace SyntaxDemo
         Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
     }
 
-    // Interface Example
-    public interface IGreetable
-    {
-        void Greet(string name);
-    }
-
-    // Class Example
-    public class Greeter : IGreetable
-    {
-        public void Greet(string name)
-        {
-            Console.WriteLine($"Hello, {name}! Welcome to the C# demo.");
-        }
-    }
 
     // Record Example
     public record User(string Name, int Age);
