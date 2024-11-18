@@ -10,10 +10,6 @@ namespace SyntaxDemo
         Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
     }
 
-
-    // Record Example
-    public record User(string Name, int Age);
-
     class Program
     {
         static void Main(string[] args)
