@@ -4,11 +4,6 @@ using System.Linq;
 
 namespace SyntaxDemo
 {
-    // Enum Example
-    public enum DayOfWeek
-    {
-        Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
-    }
 
     class Program
     {
@@ -42,21 +37,6 @@ namespace SyntaxDemo
             // Ternary Operator
             string eligibility = age >= 18 ? "Eligible to vote" : "Not eligible to vote";
             Console.WriteLine(eligibility);
-
-            // Switch Case
-            DayOfWeek today = DayOfWeek.Friday;
-            switch (today)
-            {
-                case DayOfWeek.Monday:
-                    Console.WriteLine("Start of the work week.");
-                    break;
-                case DayOfWeek.Friday:
-                    Console.WriteLine("It's Friday! Weekend is near.");
-                    break;
-                default:
-                    Console.WriteLine("It's a regular day.");
-                    break;
-            }
 
             // Loops
             Console.WriteLine("\nNumbers from 1 to 5:");
